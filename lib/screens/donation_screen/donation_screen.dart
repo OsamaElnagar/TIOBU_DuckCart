@@ -5,7 +5,6 @@ import 'package:duckcart_osama/shared/styles/fonts.dart';
 import 'package:duckcart_osama/shared/styles/form_fields.dart';
 import 'package:duckcart_osama/shared/styles/paddings.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:currency_picker/currency_picker.dart';

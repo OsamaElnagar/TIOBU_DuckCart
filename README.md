@@ -9,3 +9,5 @@ A new Flutter project, It's a task for applying to DuckCart Flutter Development 
 ![creators_screen](https://user-images.githubusercontent.com/109289535/218173356-7d189adb-1767-4193-9f17-a4293a00fab3.jpg)
 ##donations_screen
 ![donations_screen](https://user-images.githubusercontent.com/109289535/218173255-6abeb59f-8cb9-4fe0-b534-e3db1641a456.jpg)
+##support_screen
+![support_screen](https://user-images.githubusercontent.com/109289535/218256111-6929fc1f-7425-4991-9f2d-643450c180e3.jpg)
