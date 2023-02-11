@@ -22,7 +22,7 @@ class MyDonationsScreen extends StatelessWidget {
               Container(
                 height: 300,
                 decoration: BoxDecoration(
-                  color: Colors.indigo.withOpacity(.9),
+                  color: Colors.indigo.withOpacity(.4),
                   borderRadius: BorderRadius.circular(22),
                 ),
                 child: Stack(

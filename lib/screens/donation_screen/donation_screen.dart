@@ -8,12 +8,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:currency_picker/currency_picker.dart';
 
 class DonationScreen extends GetView<DonationScreenController> {
   TextEditingController currencyController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController noteController = TextEditingController();
   DonationScreenController donationScreenController = Get.find();
+  var formKey = GlobalKey<FormState>();
   final String? creator;
   final String? creatorURL;
 
@@ -21,9 +23,7 @@ class DonationScreen extends GetView<DonationScreenController> {
 
   @override
   Widget build(BuildContext context) {
-    var mediaHeight = MediaQuery
-        .of(context)
-        .size;
+    var mediaHeight = MediaQuery.of(context).size;
 
     Widget duckSpacer(int divider) {
       return SizedBox(
@@ -63,6 +63,7 @@ class DonationScreen extends GetView<DonationScreenController> {
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Form(
+              key: formKey,
               child: SizedBox(
                 height: mediaHeight.height,
                 child: Column(
@@ -87,53 +88,54 @@ class DonationScreen extends GetView<DonationScreenController> {
                         ],
                       ),
                     ),
-                    duckSpacer(15),
+                    duckSpacer(35),
+                    TextButton(
+                      onPressed: () {
+                        showCurrencyPicker(
+                          context: context,
+                          showFlag: true,
+                          showCurrencyName: true,
+                          showCurrencyCode: true,
+                          onSelect: (Currency currency) {
+                            donationScreenController.currencyPicked.value =
+                                true;
+                            donationScreenController.currencySymbol.value =
+                                currency.symbol;
+                            donationScreenController.currencyName.value =
+                                currency.name;
+                            pint('Select currency: ${currency.name}');
+                          },
+                        );
+                      },
+                      child: donationScreenController.currencyPicked.value ==
+                              true
+                          ? GetBuilder<DonationScreenController>(
+                              builder: (logic) {
+                              return RichText(
+                                text: TextSpan(
+                                  text: logic.currencyName.value,
+                                  style: DuckTextStyles.duckRegMontserrat(
+                                      fs: 15.0),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: logic.currencySymbol.value,
+                                        style: DuckTextStyles.duckRegMontserrat(
+                                            fs: 18.0,
+                                            color: DuckColors.duckMainColor)),
+                                  ],
+                                ),
+                              );
+                            })
+                          : duckNormalTexts(norText: 'Select Currency',fs: 15.0,color: DuckColors.duckMainColor)
+                    ),
+                    // duckSpacer(25),
                     DuckFormFields.duckTextFormField(
                       onChanged: (v) {
                         donationScreenController.realTimeDonations(text: v);
-                        pint(donationScreenController.textController.value);
                       },
                       controller: currencyController,
                       keyboardType: TextInputType.number,
                       hintText: '2000',
-                      prefixIcon: SizedBox(
-                        width: 80,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            InkWell(
-                              onTap: () {},
-                              child: const Icon(Icons.monetization_on_outlined,
-                                  size: 30, color: DuckColors.duckBlack),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    donationScreenController.textController.value;
-                                    pint('Go Up');
-                                  },
-                                  child: const Icon(Icons.arrow_drop_up_sharp,
-                                      size: 30, color: DuckColors.duckBlack),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    pint('Go down');
-                                  },
-                                  child: const Icon(Icons.arrow_drop_down_sharp,
-                                      size: 30, color: DuckColors.duckBlack),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
                     ),
                     duckSpacer(15),
                     DuckFormFields.duckTextFormField(
@@ -147,13 +149,13 @@ class DonationScreen extends GetView<DonationScreenController> {
                       keyboardType: TextInputType.text,
                       hintText: 'Say something nice (optional)',
                     ),
-                    duckSpacer(4),
+                    duckSpacer(6),
                     Container(
                       width: 250,
                       height: 55,
                       decoration: const BoxDecoration(
-                        borderRadius: BorderRadiusDirectional.all(
-                            Radius.circular(45)),
+                        borderRadius:
+                            BorderRadiusDirectional.all(Radius.circular(45)),
                         color: DuckColors.duckMainColor,
                       ),
                       child: TextButton(
@@ -161,7 +163,7 @@ class DonationScreen extends GetView<DonationScreenController> {
                         child: Obx(() {
                           return Text(
                             'Support \$${donationScreenController.textController.value}'
-                            .toString(),
+                                .toString(),
                             style: GoogleFonts.montserrat(
                                 color: DuckColors.duckWhite,
                                 fontWeight: FontWeight.w700,
